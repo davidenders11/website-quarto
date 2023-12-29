@@ -1,7 +1,25 @@
 ---
-title: "website-test"
 ---
 
-This is a Quarto website.
+## About Me
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+![](pictures/headshot.jpg){fig-align="left" width="300"}
+
+I'm a fourth year student at Claremont McKenna College, majoring in computer science at Harvey Mudd College. I love to build and learn new things, and am currently recruiting for software engineering roles. 
+
+I have work experience in embedded software engineering in the automotive space and full-stack web development, and have informal or academic experience in machine learning, compiler and programming language design, building AI-powered tools, and more. I also am participating in neural networks research, using generative models for climate prediction purposes.
+
+Some other interests of mine are woodworking and welding, listening to and making music, board sports (snowboard, surf, skate), and travelling. 
+
+**Email:** [david.georg.enders@gmail.com](david.georg.enders@gmail.com)
+
+## Projects
+
+### All-Hands Meeting Recap Generator
+{{< video media/demo1.mov title='What is the CERN?' >}}
+
+### Variational Autoencoder Implementation
+
+### Gmail Tasks Automation
+
+### Wordle Game and Bot

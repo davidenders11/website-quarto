@@ -2,18 +2,25 @@ project:
   type: website
 
 website:
-  title: "website-test"
+  title: "David Enders"
+  search: false
   navbar:
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+      - icon: github
+        href: https://github.com/davidenders11
+      - icon: linkedin
+        href: https://linkedin.com/in/david-enders
+      - icon: medium
+        href: https://medium.com/@davidenders
+      - icon: envelope
+        href: mailto:david.georg.enders@gmail.com
+    right:
+      - href: /resume.pdf
+        text: Resume
+      - posts.qmd
 
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
-
-
-

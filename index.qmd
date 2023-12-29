@@ -16,7 +16,7 @@ Some other interests of mine are woodworking and welding, listening to and makin
 ## Projects
 
 ### All-Hands Meeting Recap Generator
-{{< video media/demo1.mov title='What is the CERN?' >}}
+<!-- {{< video media/demo1.mov title='What is the CERN?' >}} -->
 
 ### Variational Autoencoder Implementation
 

@@ -2,3 +2,5 @@
 .DS_Store
 
 /.quarto/
+/blog-sample/
+/_site/

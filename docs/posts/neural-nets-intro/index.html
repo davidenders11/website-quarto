@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="David Enders">
+<meta name="dcterms.date" content="2023-09-11">
+
+<title>David Enders - Introduction To Neural Networks</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">David Enders</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/davidenders11" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/david-enders" rel="" target=""><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://medium.com/@davidenders" rel="" target=""><i class="bi bi-medium" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:david.georg.enders@gmail.com" rel="" target=""><i class="bi bi-envelope" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume.pdf" rel="" target="">
+ <span class="menu-text">Resume</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../posts.html" rel="" target="">
+ <span class="menu-text">My Writing</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-quest-for-neural-networks-heroship" id="toc-the-quest-for-neural-networks-heroship" class="nav-link active" data-scroll-target="#the-quest-for-neural-networks-heroship">The Quest For Neural Networks Heroship</a>
+  <ul class="collapse">
+  <li><a href="#defining-key-terms" id="toc-defining-key-terms" class="nav-link" data-scroll-target="#defining-key-terms">Defining Key Terms</a></li>
+  <li><a href="#backpropagation-as-a-training-method" id="toc-backpropagation-as-a-training-method" class="nav-link" data-scroll-target="#backpropagation-as-a-training-method">Backpropagation as a Training Method</a></li>
+  <li><a href="#a-single-layer-neural-network" id="toc-a-single-layer-neural-network" class="nav-link" data-scroll-target="#a-single-layer-neural-network">A single-layer neural network</a></li>
+  <li><a href="#building-a-multi-layer-perceptron" id="toc-building-a-multi-layer-perceptron" class="nav-link" data-scroll-target="#building-a-multi-layer-perceptron">Building a Multi-Layer Perceptron</a></li>
+  <li><a href="#improving-and-stabilizing-the-multilayer-perceptron" id="toc-improving-and-stabilizing-the-multilayer-perceptron" class="nav-link" data-scroll-target="#improving-and-stabilizing-the-multilayer-perceptron">Improving and Stabilizing the Multilayer Perceptron</a></li>
+  <li><a href="#the-transformer" id="toc-the-transformer" class="nav-link" data-scroll-target="#the-transformer">The Transformer</a></li>
+  <li><a href="#training-neural-networks" id="toc-training-neural-networks" class="nav-link" data-scroll-target="#training-neural-networks">Training Neural Networks</a></li>
+  <li><a href="#pre-training-vs.-fine-tuning" id="toc-pre-training-vs.-fine-tuning" class="nav-link" data-scroll-target="#pre-training-vs.-fine-tuning">Pre-training vs.&nbsp;Fine-tuning</a></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping Up</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introduction To Neural Networks</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">computer science</div>
+    <div class="quarto-category">neural networks</div>
+  </div>
+  </div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>David Enders </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 11, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="the-quest-for-neural-networks-heroship" class="level1">
+<h1>The Quest For Neural Networks Heroship</h1>
+<p>Becoming a neural networks “hero” is a lofty goal to achieve in 13 hours of lecture, but an enticing offer for someone looking to venture into the world of machine learning. After spending the last summer helping incorporate AI-powered tools into the workflow at the company I interned with, I was eager to learn more about the history of artificial intelligence and the implementation of neural networks. <a href="https://karpathy.ai/">Andrej Karpathy</a>, an influential AI researcher and one of the founding members of OpenAI, offers a free lecture series called <a href="https://karpathy.ai/zero-to-hero.html">Neural Networks: Zero to Hero</a>, which I decided to study. While I’m certainly no hero yet, the course provided me with a strong foundational understanding of the core concepts that comprise neural networks, as well as meaningful practice implementing these in PyTorch. In this post, I intend to share my learning from the course, focusing on concepts and leaving out most of the math and code. The aim of this post is not to act as a substitute for Andrej’s incredibly detailed lectures, but to document the knowledge I’ve gained and serve as a primer for other beginners to the topic. If you have the time, I highly recommend working through <a href="https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ">the course</a> (the total lecture time is about 13 hours, but it took me closer to 30 hours, accounting for time spent note-taking, coding and replaying difficult sections).</p>
+<section id="defining-key-terms" class="level2">
+<h2 class="anchored" data-anchor-id="defining-key-terms">Defining Key Terms</h2>
+<p>Before starting the lecture, I primed myself with some introductory research. This <a href="https://vixra.org/pdf/2108.0130v1.pdf">paper</a> was especially helpful in providing context. Below are some of the basics:</p>
+<p>A <strong>neural network</strong> is any collection of neurons arranged in such a way that their interactions yields fruitful results. While neural networks aren’t specific to machine learning by definition (the human brain is the original neural network), the term is now most often associated with the artificial neural network. Artificial neural networks (ANN) were pioneered when Warren McCulloch and and Walter Pitts <a href="https://www.cse.chalmers.se/~coquand/AUTOMATA/mcp.pdf">developed an algorithm</a> to imitate human brain activity in the 1940s (more on the history of neural networks <a href="https://cs.stanford.edu/people/eroberts/courses/soco/projects/neural-networks/History/history1.html">here</a>).</p>
+<p><img src="media/neurons.png" class="img-fluid"></p>
+<p><strong>Neurons</strong> in an ANN are, in essence, mathematical equations. They take a collection of inputs, perform some operation on these inputs, and produce a single output, which can then be transmitted to other neurons. Neurons in an ANN are similar to nerve cells in many ways:</p>
+<ul>
+<li><p>both receive many input signals, assign weights to these, and process them</p></li>
+<li><p>both transmit a single output to receivers when enough input is present</p></li>
+<li><p>data processing occurs on a local level (within each neuron)</p></li>
+<li><p>“memory” is distributed throughout the system (long-term memory is stored in synapse weights, short-term memory in impulses)</p></li>
+<li><p>both networks' synapse connections are strengthened by experience</p></li>
+<li><p>certain groups of neurons getting activated will cause other neurons to fire.</p></li>
+</ul>
+<p>In an ANN, neurons are arranged into <strong>layers</strong>, where the collection of neurons receiving inputs are the <strong>input layer</strong>, the intermediary neurons that do most of the processing are the <strong>hidden layer</strong>, and the final layer producing a result is the <strong>output layer</strong>. Neural networks form conclusions and make decisions by assigning <strong>weights</strong> to each input, which determines how much impact each input has. Weights and <strong>biases</strong> are the parameters that, through trial and error, are adjusted during training until the network arrives at a correct model.</p>
+<p><img src="media/simplenet.jpeg" class="img-fluid"></p>
+<p>So, the defining characteristics of an ANN are its <strong>architecture</strong> (how neurons are arranged in layers and interconnected), the <strong>training algorithm</strong> (i.e.&nbsp;the technique for calculating and adjusting weights on connections), and its <strong>activation function</strong> (the function that determines whether a neuron should be activated or not based on the given inputs). The activation in the neurons of the output layer will determine the model’s “answer” to whatever question was posed. Activation functions often also normalize output to the proper desired range (i.e.&nbsp;0 to 1).</p>
+</section>
+<section id="backpropagation-as-a-training-method" class="level2">
+<h2 class="anchored" data-anchor-id="backpropagation-as-a-training-method">Backpropagation as a Training Method</h2>
+<p>With some basic terms defined, we can now examine how these networks are trained at a baseline level. I mentioned that neurons are basically mathematical expressions. In fact, their most important characteristic in the context of training a network is that any operation that takes place in a neuron must be differentiable. This allows us to calculate <strong>gradients</strong> at each neuron with respect to the network’s <strong>loss function</strong>. The loss function measures the overall performance of a neural network by comparing target outcomes and actual outcomes, so the goal is always to minimize the loss function. Gradients represent the impact that each parameter has on the loss function, and are calculated using local derivatives at each neuron and the <a href="https://en.wikipedia.org/wiki/Chain_rule">chain rule</a>. The gradient provides information that allows the network to adjust these parameters to decrease the network’s loss. Simply put, we use derivatives to measure what impact each neuron has on the output. If the impact aligns with our target outcome, we increase that neuron’s impact, otherwise we reduce that neuron’s impact (using weights and biases). This is how the model learns.</p>
+<p>To get a gradient at each neuron in the network, we need some way to calculate the derivative of each parameter with respect to its impact on the loss function. Using a process called <strong>backpropagation</strong>, this process is relatively simple.</p>
+<p><img src="media/backprop.png" class="img-fluid"></p>
+<p>Take this neuron from Andrej’s first lecture, which has two inputs (x1 and x2), two weights (w1 and w2), one bias b and the activation function tanh. The derivative of output o with respect to itself is 1. That's our base case. Now we can go back one step; do/dn is the derivative of tanh(n) at n = 0.8814, which is equal to 1-tanh(0.8814)^2 = 0.5. So we can fill in the gradients of o and n with 1 and 0.5, respectively (these are already filled in in the diagram above). The next four gradients are simple to calculate: since each of the four values are being added, the local derivative is 1 for each of them. We use the chain rule with the ongoing overall derivative, multiplying 0.5*1 in each case to get a gradient of 0.5. To get the leftmost gradients, we calculate local derivatives d(w2)/d(x2w2) = x2 = 0, d(x2)/d(x2w2) = w2 = 1, d(w1)/d(x1w1) = x1 = 2, and finally d(x1)/d(x1w1) = w1 = -3. Now we can get the gradient by multiplying the local derivative by the output’s gradient, so w2’s gradient is 0*0.5=0, x2’s is 1*0.5=0.5, w1’s gradient is 2*0.5=1 and x1’s is -3*0.5=-1.5.</p>
+<p>There are many steps involved in calculating gradients and implementing backpropagation, but the arithmetic is simple. We begin with the rightmost local derivative, then we recursively iterate left, or backpropagate, multiplying each node’s local derivative by its output’s gradient. These gradients are the core element we need to train our neural network. This is an isolated example in one neuron, but we now know that if we need the final output o to increase, we can achieve this by making the weight w1 or the bias b more positive. These parameters can then be recursively adjusted until the output reaches the desired value. Backpropagation is the core mechanism that enables the training of neural networks. Using backpropagation, the parameters in a neural network can essentially be randomly initialized, and they will eventually converge to the correct values during model training.</p>
+</section>
+<section id="a-single-layer-neural-network" class="level2">
+<h2 class="anchored" data-anchor-id="a-single-layer-neural-network">A single-layer neural network</h2>
+<p>As mentioned above, a neural network can be as straightforward as a single layer of neurons that modify inputs by applying some weights and some mathematical expression. To understand how these are implemented, Andrej uses an example problem, where the goal is to generate more names or name-like strings using a model that is trained on a long list of existing names. This problem can be solved using a neural network, but a neural network isn’t the easiest solution. We can also use a probability distribution matrix and a character-level <strong>bigram</strong> language model, where we store pairs of subsequent characters and their corresponding frequencies, then use these to calculate the probability that one letter will follow another. With this probability distribution, we can make reasonably accurate guesses about which letter should follow the current letter; for example, the letter z is highly unlikely to follow the letter q, so the language model would almost never pick z next when the current letter is q. Conversely, the letter a is a common starting letter for names, so the model should assign a high probability that it follows the “start” character . (which is also the end character in this implementation and the graph below).</p>
+<p>Below is a graph of these frequencies from a large dataset of words used in the exercises. Each cell denotes the frequency that the second character follows the first character in the dataset. If we divide each cell by the sum of its row (the total number of times the first character appeared in the dataset), we have a probability distribution showing how likely it is that each of the second characters were to follow the first character. Using this probability distribution is one way to generate words. For each character, starting at the first, we use the probability distribution to “pick” the next character, so characters that appeared next to each other in the dataset are likely to appear next to each other in the output.</p>
+<p><img src="media/matrix.png" class="img-fluid"></p>
+<p>This is relatively sound theoretically, but you can imagine that choosing a character only based on the previous output isn’t a very effective method. This is also not a neural network – since we aren’t training the model, we’re simply using existing probabilities to guess what a good output might be. Here are some sample “names” the model generated in the second lecture:</p>
+<p>mor.</p>
+<p>axx.</p>
+<p>minaymoryles.</p>
+<p>kondlaisah.</p>
+<p>anchshizarie.</p>
+<p>These names are indisputably not very name-like. However, in order to improve our output, we must be able to quantify its quality in some standard way. To do this, we’ll use the concept of <strong>likelihood</strong>; how likely an output is to be produced given a model’s probability distribution. So the likelihood of something like emma, which is in the dataset, should be reasonably high and something like xqxzi which certainly isn’t in the dataset, should be near-zero. The likelihood of the dataset is the product of all the individual probabilities that each element in the dataset could be generated. To make this more stable and easier to work with, instead of multiplying all of the probabilities, we sum the log of the individual probabilities, giving us the <strong>log likelihood</strong>. Since probabilities are between 0 and 1, making the logs of the probabilities negative, we negate their sum (the log likelihood) and use the <strong>negative log likelihood</strong>. To arrive at our final measure for output quality (the loss function), we divide the negative log likelihood by the number of values in the dataset and are left with an average negative log likelihood, which is a metric to describe how likely the model would be to reproduce the training set.</p>
+<p>We can use this to create a neural network with the bigram language model. To train it, we follow a process similar to the one in the first example, iteratively backpropagating and modifying the weights in accordance with their gradients, thus minimizing the average negative log likelihood. To codify inputting a character into the model to calculate the next character, we use “one-hot” encodings of each character, where an integer is encoded as a matrix where each value is zeroed-out except the the value at the index corresponding to the integer’s value, which is 1. So the letter d which has index 3 would be represented as the matrix</p>
+<p>[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]</p>
+<p>Each element in this vector represents the position for one of the 27 characters of the alphabet, plus an extra for the start/stop character .. To create the foundation for training the model, we can create a randomly-initialized 27-by-27 matrix representing the weights: 27 neurons, each takes 27 inputs. So when we multiply the input matrix (1x27) by the weights matrix (27x27), we get a 1x27 output matrix. Each element in the output matrix represents the <strong>logit</strong> (log probability) for that character, and is typically “squished” using the <a href="https://www.pinecone.io/learn/softmax-activation/">softmax activation function</a>, to represent a probability, in this case the probability of this character being chosen.</p>
+<p>At the beginning, these outputted probabilities won’t be accurate or useful. However, all of the operations described above are differentiable, so we can follow a similar process as done in the first example to tune the weights. To train the network, we iteratively backpropagate and modify the weights in accordance with their gradients with respect to the loss function, thus minimizing the average negative log likelihood. Eventually, the weights matrix will converge to a more “correct” matrix that does a better job of assigning probabilities for the next character given an input matrix representing the current character.</p>
+<p>Unfortunately, since the bigram model only takes into account the previous character, even a neural network trained on lots of data will output mediocre results (in fact, once it’s fully trained, it will be an equivalent model to the earlier, counting-based probability model using frequencies). To improve these results, we must increase the size of context we are considering, by adding more layers to our neural network. The important takeaway is that we are able to start off with a completely random collection of weights, assign these weights to modify input characters, and get probability estimates for the next character. Then, simply by calculating the derivatives of each parameter with respect to the output’s accuracy, we were able to iteratively improve the weights until we had a model that performed as well as it could given only a single character as context. This example also introduces one of the central challenges to implementing a neural network: how best to represent the input in a numerical format that can be fed into the network as input. In this example, a vector with a one-hot encoding worked well, but this encoding may vary greatly from network to network.</p>
+</section>
+<section id="building-a-multi-layer-perceptron" class="level2">
+<h2 class="anchored" data-anchor-id="building-a-multi-layer-perceptron">Building a Multi-Layer Perceptron</h2>
+<p>The next step in creating a more intelligent model is to give it more knowledge or context. To build a multi-layer perceptron, we will expand on the bigram model by adding two more layers and slightly altering our method for representing inputs.</p>
+<p>To provide more context to the model, we now define a <strong>block size</strong>, or how many previous characters are given to determine the next character (in “real” large language models, the block size would determine how many words or chunks of words are used to predict the next). Our training set is now the set of all substrings (of block_size length) of names in the list of words, and the label for each substring is the character following it. For simplicity, let's assume block_size = 3.</p>
+<p><img src="media/multilayer.png" class="img-fluid"></p>
+<p>Another feature introduced in this section is an <strong>embeddings layer</strong>, where we define an embeddings lookup table that stores an embedding for each character, thus converting each input (the 3-character string) to an n-dimensional embedding. This is done to normalize inputs and codify their values in a standard way. The embeddings are then adjusted as the network trains. Our new network’s architecture is as follows: the embeddings layer outputs embeddings that squash the inputs into a pre-defined space. Then, this embedding is the input to the hidden layer, the size of which we can choose. A design choice like the number of neurons in the hidden layer is called a <strong>hyperparameter</strong>, and is left to the developer to define and later optimize to improve the model’s performance. The hidden layer must have the same number of outputs as each neuron in the output layer takes as inputs. Finally, the output layer will have 27 neurons, one for each character. The hidden layer and the output layer each have a matrix of weights, which are used to process the inputs and are modified to train the model. The logits in the output layer are then exponentiated and normalized to sum to 1, so they can be used as probabilities.</p>
+<p>This model is ready to train. However, we now have over 10,000 parameters and our dataset has more than 30,000 values. Calculating the output, backpropagating through each parameter, and adjusting the weights for each parameter is very computationally expensive, and while feasible for a network of this size, is not scalable. Instead, we choose <strong>minibatches</strong>, or smaller subsets of the dataset, to train the model. So for each pass, we choose a random, fixed-size subset of the data, and use the loss function with respect to that data to tune the weights. The size of the minibatch is another hyperparameter; the tradeoff for the developer is the compute time per pass vs.&nbsp;the noise introduced by using incomplete datasets to train the model.</p>
+<p>We must also choose a reasonable <strong>learning rate</strong>, which is the multiplier used to multiply the gradient to adjust weights. With a very small learning rate, the model will learn at an unwieldy, slow rate. With a very high learning rate, the loss will be unstable, as the parameters are being over-adjusted each pass through the network. To find a good learning rate, we can plot the learning rate against the loss, and find a rate at which the loss is decreasing consistently without much noise. In the graph below, the learning rate at 0.1 seems to be a good choice. <strong>Learning rate decay</strong> is another common practice, where the learning rate is decreased at a later point in training when the loss is already small, and the initial learning rate has become too high.</p>
+<p><img src="media/learningrate.png" class="img-fluid"></p>
+<p>Additional concepts that are key to be cognizant of when training a neural network are <strong>overfitting</strong> and <strong>underfitting</strong>. Overfitting occurs when the neural network is trained <em>too much</em> on a certain dataset, and starts to essentially memorize that data. Then, when sampling from this neural network, it will too closely reproduce the data that it was fed instead of producing useful “new” data. Underfitting is the opposite, and takes place when the neural network hasn’t learned enough from the data. To mitigate and measure these phenomenons, we split our dataset into a <strong>training set</strong> (about 80% of the data), a <strong>development set</strong> (about 10% of the data), and a <strong>test set</strong> (the last 10% of the data). The training data is the only set that should be used to train the model. The development set should then be used to evaluate the network’s loss, since this data hasn’t been seen yet by the network. If the loss on the training data is much lower than the loss on the development data, the network is likely overfitted; it is performing much better on data it is familiar with. If the losses are approximately the same, the model is likely underfitted; it hasn’t learned enough, and the developer should likely tweak the hyperparameters (train longer, increase the size of the network, tweak the learning rate, etc.).</p>
+</section>
+<section id="improving-and-stabilizing-the-multilayer-perceptron" class="level2">
+<h2 class="anchored" data-anchor-id="improving-and-stabilizing-the-multilayer-perceptron">Improving and Stabilizing the Multilayer Perceptron</h2>
+<p>The model described above is functional and leaves us with relatively low loss, but there is some wasted effort inherent to its architecture, and other potential weaknesses which should be addressed. Since all of our weights are randomly initialized, the output probabilities will initially predict highly incorrect outcomes. The loss calculated on these initial values will be very high, much higher than the loss would be with evenly distributed probabilities (i.e.&nbsp;where each next character is equally likely to be predicted). This occurs when the weights are initialized with large random numbers, outputting very confident predictions, despite not having been trained to output confidently <em>correct</em> predictions. This can be mitigated by initializing the weights matrix for the output layer with values very close to 0, so that each logit in the output is near-zero, producing output probabilities that are near-equal. This simple step leaves us with a significantly lower initial loss, which then reduces total computation. Instead of wasting computation correcting the initial predictions, the model will approach accurate weights much faster. As the model learns, these near-zero weights will be adjusted to approximate their correct values.</p>
+<p>Another improvement to the model is facilitated by <strong>batch normalization</strong>. This is another layer that is placed between hidden layers to scale inputs between layers, so that anomalies don’t take place. We’ve already discussed an embeddings layer which normalizes the inputs, but activations sent as inputs from one layer to the next are left raw. In batch normalization, these intermediate values are scaled and shifted using their standard deviation and mean. This addresses the issue of <strong>saturated neurons</strong>, where an activation function for a layer fails to output values evenly distributed along its range (i.e.&nbsp;evenly distributed between 0 and 1), but instead tends toward the extremes, creating hyperactive neurons and dead neurons that have no learning power at all (lots of 0s and lots of 1s). To normalize a batch, we center the pre-activation values, or the values that feed into the activation function, using the mean and the standard deviation of each batch to scale and shift the activations from the previous layer. The goal is to create a roughly Gaussian shape for the distribution of data inputted to the next layer.</p>
+<p>Even with these stabilizing measures, the multi-layer perceptron described is not very deep, and thus has limited learning capabilities. One factor in the current implementation that makes it difficult to create deeper networks is our method for processing inputs; currently, we are squashing all of our input into the neural network at the input layer simultaneously. This mutes the data and doesn’t allow for each piece of input to influence the outcome as much as it can. Another improvement to the model is the concept of the WaveNet, where smaller chunks of input data are concatenated, and these chunks are combined piece-by-piece.</p>
+<p><img src="media/wavenet.png" class="img-fluid"></p>
+<p>Such a model enables an even deeper neural network, where each input element can have a greater impact. These improvements represent only a subset of optimizations to neural networks; this is its own field of research and requires many more dedicated posts to fully discuss. I will focus the rest of this post on <a href="https://www.youtube.com/watch?v=kCc8FmEb1nY">lecture 7</a> (the most viewed lecture in the series) and the transformer architecture introduced there, which has revolutionized neural network implementation.</p>
+</section>
+<section id="the-transformer" class="level2">
+<h2 class="anchored" data-anchor-id="the-transformer">The Transformer</h2>
+<p>The transformer architecture was first introduced in the 2017 paper <a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need</a>, and forms the foundation for famous natural language models like ChatGPT (GPT = generative pre-trained transformer), as well as a long list of models beyond natural language processing. The basic idea is that training data should be able to communicate with other training data and decide which data to value more. “Attention” is the idea that the tokens are aware of each other’s existence and can focus on the more important ones. In this way, information can be gathered in a data-dependent way, where some pieces of training data are more valuable than others.</p>
+<p>With the transformer architecture, small chunks, or batches, of the dataset are separated and used for training piece-by-piece, with a fixed <strong>batch size</strong>. The training data in language models is commonly referred to as a <strong>token</strong>, which is typically a chunk of characters smaller than an average word (a token in the name-prediction example would be a single character). Previously, all of our context information would inform the following prediction with equal weight or value: any character in the series of three characters in our context blocks was equally important. Now, with attention, a token can express affinities for other tokens, where a certain past token might factor in more heavily than others when calculating a prediction. This replicates real-world sentence formulation more accurately. For example, when choosing the correct verb in a sentence, the subject of the sentence should be a more important factor than the article the sentence started with. An <strong>attention head</strong> is where the the weighted sums representing relationships between tokens are calculated. Usually, multiple attention heads are computed in parallel, allowing the model to encode different types of relationships between tokens. It is important to note, however, that tokens within a batch can only communicate with themselves; there is no communication between batches of data.</p>
+<p><img src="media/transformer.png" class="img-fluid"></p>
+<p>The transformer paper suggests an architecture that stacks “attention layers” with multilayer perceptrons. In each attention layer, attention vectors are used to represent contextual relationships between tokens in a batch. Multiple attention vectors are used in multi-head attention layers, which are then combined using a weighted average. This setup creates a deeper neural network, which is capable of fitting our data much more closely, effectively learning more and incorporating context in a more powerful way.</p>
+</section>
+<section id="training-neural-networks" class="level2">
+<h2 class="anchored" data-anchor-id="training-neural-networks">Training Neural Networks</h2>
+<p>By the end of lecture 7, the viewer has coded alongside Andrej to build a simplified model of a GPT which is capable of generating a specified number of tokens in a manner similar to the data it was trained on (i.e. generating Shakespeare-like content given Shakespeare’s work to train on). The hyperparameters are entirely configurable, so the developer is able to choose the learning rate, training iterations, number of embeddings, number of layers, the number of heads, head size, the batch size, the block size, and the dropout rate. When choosing these hyperparameters, I was tempted to push the size of the network ever higher – the bigger the better, right? Near the end of the video, Andrej mentions that the example network he trained took fifteen minutes to train on his high-powered GPU, and warns that anyone unequipped with a dedicated GPU shouldn’t attempt to train that network. I tried it anyway, but gave up when my MacBook grew alarmingly warm after six hours of CPU time and the training was still only halfway done.</p>
+<p>This was quite interesting to me, as I had heard of a GPU before, but never thought to look into their use or the difference between a GPU and a CPU. Graphics processing units were originally developed to assist in rendering image or video, or performing other operations which require highly parallel mathematical/graph operations. GPUs have thousand of cores, which make them especially adept at performing lots of small operations in parallel, which is exactly what training a neural network requires. CPUs (core processing units) have between two and sixty-four cores, and are far more generalist than GPUs, primarily performing operations serially. For this reason, training a neural network using a CPU is exceptionally slow and prohibitively expensive depending on the size of the network. Considering the massive datasets and network sizes used to train production-ready neural networks such as ChatGPT, it’s easy to imagine how massive computation costs are for participating companies, and how much attention is given to training techniques and choosing well-suited hardware.</p>
+</section>
+<section id="pre-training-vs.-fine-tuning" class="level2">
+<h2 class="anchored" data-anchor-id="pre-training-vs.-fine-tuning">Pre-training vs.&nbsp;Fine-tuning</h2>
+<p>Lastly, an important note: training a very deep neural network with lots of language data will not produce a highly-capable AI assistant like ChatGPT without more work. The process described above and discussed throughout the lecture series is known as “pre-training”, where a model is fed massive amounts of language data and trained to generate more, similar data. However, a model that spits out random generated data that approximates its training data isn’t very useful. The model must be “fine-tuned” to match its intended purpose. A chat-model must be able to answer questions and converse, a code generator must be able to generate code based on a prompt, and so on. OpenAI released the diagram below explaining their fine-tuning process in this <a href="https://openai.com/blog/chatgpt">blog post</a> introducing ChatGPT. The fine-tuning process requires far more human intervention, including ranking outputs, creating a reward model which rewards high-quality responses, and the utilization of reinforcement learning. This process is nuanced, and is not nearly as open-source as the pre-training stage is. This is where the neural network is converted from a raw neural network to a highly commercial product that can be sold and monetized, so logically these techniques are kept secret.</p>
+<p><img src="media/gpt.png" class="img-fluid"></p>
+</section>
+<section id="wrapping-up" class="level2">
+<h2 class="anchored" data-anchor-id="wrapping-up">Wrapping Up</h2>
+<p>We’ve come a long way from backpropagation to a full-fledged natural language model with configurable hyperparameters, layer normalization, skip connections, self-attention, and multi-layer perceptrons. If this introduction piqued your interest, following the <a href="https://karpathy.ai/zero-to-hero.html">lecture series</a> is the best way to expand on more difficult concepts and create your own implementation of a neural network. I will likely continue to write about neural networks, and am taking a class on the topic this coming semester, so stay tuned for more posts on the topic! Thanks for taking the time to read.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

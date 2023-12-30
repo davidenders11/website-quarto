@@ -3,7 +3,7 @@
 
 ## About Me
 
-![](pictures/headshot.jpg){fig-align="left" width="300"}
+![](media/headshot.jpg){fig-align="left" width="300"}
 
 I'm a fourth year student at Claremont McKenna College, majoring in computer science at Harvey Mudd College. I love to build and learn new things, and am currently recruiting for software engineering roles. 
 

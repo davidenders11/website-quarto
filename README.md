@@ -7,4 +7,5 @@ The website is built using Quarto.
 Possible extensions:
 
 - Add an RSS feed to the blog
+- GitHub Actions deployment
 - Render PDF within website
